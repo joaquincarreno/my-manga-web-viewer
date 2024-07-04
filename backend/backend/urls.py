@@ -16,9 +16,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from api.views import getAvailableMangas
+from api.views import getAvailableMangas, getAvailableVolumes, getVolume
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('availableMangas/', getAvailableMangas)
+    path('availableMangas/', getAvailableMangas),
+    path('availableVolumes/<str:mangaName>/', getAvailableVolumes),
+    path('getVolume/<str:mangaName>/<str:volumeNumber>', getVolume)
 ]
