@@ -15,16 +15,16 @@ services:
     #   default:
     #     ipv4_address: 172.19.0.3
     command: bash -c 'npm install && npm --host run dev '
-  # backend:
-  #   build:
-  #     ./backend
-  #   ports:
-  #     - 8000:8000
-  #   tty: true
-  #   restart: always
-  #   volumes:
-  #     - type: bind
-  #       source: ./backend
-  #       target: /srv/app
-  #   working_dir: /srv/app
-  #   command: bash -c "python -m pip install -r requirements.txt && python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+  backend:
+    build:
+      ./backend
+    ports:
+      - 8000:8000
+    tty: true
+    restart: always
+    volumes:
+      - type: bind
+        source: ./backend
+        target: /srv/app
+    working_dir: /srv/app
+    command: bash -c "python -m pip install -r requirements.txt && python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
