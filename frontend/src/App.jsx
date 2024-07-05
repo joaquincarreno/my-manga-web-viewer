@@ -35,9 +35,12 @@ function App() {
 
   const [manga, setManga] = useState("Inside Mari");
   const [availableMangas, setAvailableMangas] = useState([]);
-  const [mangaInfo, setMangaInfo] = useState({});
-  const [volume, setVolume] = useState(1);
-  const [page, setPage] = useState(1);
+  const [mangaInfo, setMangaInfo] = useState({
+    n_volumes: 1,
+    pages_per_volume: [1],
+  });
+  const [volume, setVolume] = useState(0);
+  const [page, setPage] = useState(0);
 
   useEffect(() => {
     axios.get(MANGAS_API).then((response) => {

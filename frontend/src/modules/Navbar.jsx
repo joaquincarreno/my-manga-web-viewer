@@ -2,7 +2,7 @@ function Navbar({
   selectedManga = "",
   availableMangas = [],
   mangaSetter = () => {},
-  mangaInfo = { n_volumes: 0, pages_per_volume: [] },
+  mangaInfo = { n_volumes: 1, pages_per_volume: [1] },
   volume = 1,
   volumeSetter = () => {},
   page = 1,
