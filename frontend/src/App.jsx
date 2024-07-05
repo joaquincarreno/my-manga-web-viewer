@@ -23,6 +23,29 @@ function App() {
         setImage(response.data.page);
       })
   }, [page, volume]);
+
+  const prevPage = () => {
+    setPage(page - 1);
+    return;
+  };
+  const nextPage = () => {
+    setPage(page + 1);
+    return;
+  };
+
+  const processClick = (target) => {
+    const rect = target.currentTarget.getBoundingClientRect();
+    const normX = target.clientX / rect.width;
+
+    if (normX < 0.5) {
+      console.log("prev page");
+      prevPage();
+    } else if (normX >= 0.5) {
+      console.log("next page");
+      nextPage();
+    }
+  };
+
   return (
     <div className="img-container">
       {imagesReady ? (
@@ -31,7 +54,7 @@ function App() {
         <img
           src={`data:image/png;base64, ${image}`}
           className="center-fit"
-          // onClick={processClick}
+          onClick={processClick}
         ></img>
       )}
     </div>
