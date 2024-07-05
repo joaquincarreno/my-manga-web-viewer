@@ -57,12 +57,10 @@ function App() {
   }, [manga]);
 
   const prevPage = () => {
-    setPage(page - 1);
-    return;
+    if (page > 0) setPage(page - 1);
   };
   const nextPage = () => {
-    setPage(page + 1);
-    return;
+    if (page < mangaInfo.pages_per_volume[volume - 1]) setPage(page + 1);
   };
 
   const processClick = (target) => {
