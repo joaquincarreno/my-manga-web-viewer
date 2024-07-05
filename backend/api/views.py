@@ -41,13 +41,13 @@ def getPage(_, mangaName, volumeNumber, pageNumber):
 
     if path.exists():
         volumes = listdir(path)
-        volume_name = volumes[volumeNumber - 1]
+        volume_name = volumes[volumeNumber]
         volume_path = path / volume_name
 
         if volume_path.exists():
             pages = sorted(listdir(volume_path))
             # if(len(pages) >= pageNumber):
-            page_path = volume_path / pages[pageNumber-1]
+            page_path = volume_path / pages[pageNumber]
             return Response({'page': encodeImage(page_path)})
     
     return Response(data=[])

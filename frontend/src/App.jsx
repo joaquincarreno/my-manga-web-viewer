@@ -67,7 +67,7 @@ function App() {
     if (page > 0) setPage(page - 1);
   };
   const nextPage = () => {
-    if (page < mangaInfo.pages_per_volume[volume - 1]) setPage(page + 1);
+    if (page < mangaInfo.pages_per_volume[volume]) setPage(page + 1);
   };
 
   const processClick = (target) => {
