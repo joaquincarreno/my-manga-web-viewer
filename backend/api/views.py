@@ -8,7 +8,10 @@ import pathlib
 from os import listdir
 
 MANGAS_PATH=pathlib.Path('./api/mangas')
-
+def encodeImage(imagePath):
+    # print(imagePath)
+    with open(imagePath, "rb") as image_file:
+        return base64.b64encode(image_file.read()).decode('utf-8')
 # Create your views here.
 @api_view(['GET'])
 def getAvailableMangas(_):
@@ -16,11 +19,14 @@ def getAvailableMangas(_):
     return Response(data=files)
 
 @api_view(['GET'])
-def getAvailableVolumes(_, mangaName):
+def getMangaInfo(_, mangaName):    
     path = MANGAS_PATH / mangaName
     if path.exists():
         volumes = listdir(path)
-        return Response(data=volumes)
+        print(volumes)
+        pagesInfo = map(lambda vPath: len(listdir(path / vPath)) if (path / vPath).exists() else 0, volumes)
+
+        return Response({'n_volumes': len(volumes), 'pages_per_volume': list(pagesInfo)})
     else:
         return Response(data=[])
 
