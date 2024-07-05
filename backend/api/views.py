@@ -22,7 +22,7 @@ def getAvailableMangas(_):
 def getMangaInfo(_, mangaName):    
     path = MANGAS_PATH / mangaName
     if path.exists():
-        volumes = listdir(path)
+        volumes = sorted(listdir(path))
         print(volumes)
         pagesInfo = map(lambda vPath: len(listdir(path / vPath)) if (path / vPath).exists() else 0, volumes)
 
@@ -45,7 +45,7 @@ def getPage(_, mangaName, volumeNumber, pageNumber):
         volume_path = path / volume_name
 
         if volume_path.exists():
-            pages = listdir(volume_path)
+            pages = sorted(listdir(volume_path))
             # if(len(pages) >= pageNumber):
             page_path = volume_path / pages[pageNumber-1]
             return Response({'page': encodeImage(page_path)})
