@@ -94,6 +94,16 @@ function App() {
           onClick={processClick}
         ></img>
       )}
+      <Navbar
+        selectedManga={manga}
+        mangaSetter={setManga}
+        availableMangas={availableMangas}
+        mangaInfo={mangaInfo}
+        volume={volume}
+        volumeSetter={setVolume}
+        page={page}
+        pageSetter={setPage}
+      />
     </div>
   );
 }
