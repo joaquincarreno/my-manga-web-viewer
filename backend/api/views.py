@@ -24,20 +24,24 @@ def getAvailableVolumes(_, mangaName):
     else:
         return Response(data=[])
 
+def encodeImage(imagePath):
+    # print(imagePath)
+    with open(imagePath, "rb") as image_file:
+        return base64.b64encode(image_file.read()).decode('utf-8')
+    
 @api_view(['GET'])
-def getVolume(_, mangaName, volumeNumber):
+def getPage(_, mangaName, volumeNumber, pageNumber):
     path = MANGAS_PATH / mangaName
 
     if path.exists():
-        volume_name = listdir(path)[int(volumeNumber)]
+        volumes = listdir(path)
+        volume_name = volumes[volumeNumber - 1]
         volume_path = path / volume_name
-        
-        def encodeImage(imagePath):
-            # print(imagePath)
-            with open(volume_path / imagePath, "rb") as image_file:
-                return base64.b64encode(image_file.read()).decode('utf-8')
-            
+
         if volume_path.exists():
-            return Response(data=map(encodeImage, listdir(volume_path)))
-    else:
-        return Response(data=[])
+            pages = listdir(volume_path)
+            # if(len(pages) >= pageNumber):
+            page_path = volume_path / pages[pageNumber-1]
+            return Response({'page': encodeImage(page_path)})
+    
+    return Response(data=[])
