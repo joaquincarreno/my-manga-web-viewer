@@ -9,6 +9,26 @@ const MANGAS_API = BACKEND_IP + "availableMangas/";
 const VOLUMES_API = BACKEND_IP + "availableVolumes/";
 const PAGES_API = BACKEND_IP + "getPage/";
 
+const errorCatcher = (error) => {
+  if (error.response) {
+    // La respuesta fue hecha y el servidor respondió con un código de estado
+    // que esta fuera del rango de 2xx
+    console.log(error.response.data);
+    console.log(error.response.status);
+    console.log(error.response.headers);
+  } else if (error.request) {
+    console.log("no answer");
+    // La petición fue hecha pero no se recibió respuesta
+    // `error.request` es una instancia de XMLHttpRequest en el navegador y una instancia de
+    // http.ClientRequest en node.js
+    console.log(error.request);
+  } else {
+    // Algo paso al preparar la petición que lanzo un Error
+    console.log("Error", error.message);
+  }
+  console.log(error.config);
+};
+
 function App() {
   const [image, setImage] = useState([]);
   const [imagesReady, setImagesReady] = useState(false);
@@ -16,12 +36,16 @@ function App() {
   const [manga, setManga] = useState("Inside Mari");
   const [volume, setVolume] = useState(1);
   const [page, setPage] = useState(1);
+
   useEffect(() => {
+    console.log("ohla");
+    // PAGES_API + "Inside Mari/0";
     axios
       .get(PAGES_API + manga + "/" + volume + "/" + page)
       .then((response) => {
         setImage(response.data.page);
       })
+      .catch(errorCatcher);
   }, [page, volume]);
 
   const prevPage = () => {
