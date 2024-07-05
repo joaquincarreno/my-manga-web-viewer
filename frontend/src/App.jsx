@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import "./App.css";
+import Navbar from "./modules/Navbar";
 
 import axios from "axios";
 
