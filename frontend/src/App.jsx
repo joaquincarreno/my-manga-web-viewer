@@ -6,7 +6,7 @@ import axios from "axios";
 const BACKEND_IP = "http://0.0.0.0:8000/";
 // const BACKEND_IP = "http://192.172.100.17:8000/";
 const MANGAS_API = BACKEND_IP + "availableMangas/";
-const VOLUMES_API = BACKEND_IP + "availableVolumes/";
+const MANGA_INFO_API = BACKEND_IP + "getMangaInfo/";
 const PAGES_API = BACKEND_IP + "getPage/";
 
 const errorCatcher = (error) => {
@@ -34,12 +34,11 @@ function App() {
   const [imagesReady, setImagesReady] = useState(false);
 
   const [manga, setManga] = useState("Inside Mari");
+  const [mangaInfo, setMangaInfo] = useState({});
   const [volume, setVolume] = useState(1);
   const [page, setPage] = useState(1);
 
   useEffect(() => {
-    console.log("ohla");
-    // PAGES_API + "Inside Mari/0";
     axios
       .get(PAGES_API + manga + "/" + volume + "/" + page)
       .then((response) => {
@@ -47,6 +46,15 @@ function App() {
       })
       .catch(errorCatcher);
   }, [page, volume]);
+
+  useEffect(() => {
+    axios
+      .get(MANGA_INFO_API + manga)
+      .then((response) => {
+        setMangaInfo(response.data);
+      })
+      .catch(errorCatcher);
+  }, [manga]);
 
   const prevPage = () => {
     setPage(page - 1);
