@@ -3,8 +3,8 @@ import "./App.css";
 
 import axios from "axios";
 
-const BACKEND_IP = "http://0.0.0.0:8000/";
-// const BACKEND_IP = "http://192.172.100.17:8000/";
+// const BACKEND_IP = "http://0.0.0.0:8000/";
+const BACKEND_IP = "http://192.168.100.17:8000/";
 const MANGAS_API = BACKEND_IP + "availableMangas/";
 const MANGA_INFO_API = BACKEND_IP + "getMangaInfo/";
 const PAGES_API = BACKEND_IP + "getPage/";
@@ -34,9 +34,16 @@ function App() {
   const [imagesReady, setImagesReady] = useState(false);
 
   const [manga, setManga] = useState("Inside Mari");
+  const [availableMangas, setAvailableMangas] = useState([]);
   const [mangaInfo, setMangaInfo] = useState({});
   const [volume, setVolume] = useState(1);
   const [page, setPage] = useState(1);
+
+  useEffect(() => {
+    axios.get(MANGAS_API).then((response) => {
+      setAvailableMangas(response.data);
+    });
+  });
 
   useEffect(() => {
     axios
