@@ -4,9 +4,12 @@ import Navbar from "./modules/Navbar";
 
 import axios from "axios";
 
+// import memory from "./memory.json";
+
 // const BACKEND_IP = "http://0.0.0.0:8000/";
 const BACKEND_IP = "http://192.168.100.17:8000/";
 const MANGAS_API = BACKEND_IP + "availableMangas/";
+const LAST_SESION_API = BACKEND_IP + "lastSesion";
 const MANGA_INFO_API = BACKEND_IP + "getMangaInfo/";
 const PAGES_API = BACKEND_IP + "getPage/";
 
@@ -32,9 +35,8 @@ const errorCatcher = (error) => {
 
 function App() {
   const [image, setImage] = useState([]);
-  const [imagesReady, setImagesReady] = useState(false);
 
-  const [manga, setManga] = useState("Inside Mari");
+  const [manga, setManga] = useState("");
   const [availableMangas, setAvailableMangas] = useState([]);
   const [mangaInfo, setMangaInfo] = useState({
     n_volumes: 1,
@@ -44,27 +46,38 @@ function App() {
   const [page, setPage] = useState(0);
 
   useEffect(() => {
-    axios.get(MANGAS_API).then((response) => {
-      setAvailableMangas(response.data);
-    });
-  });
+    Promise.all([axios.get(MANGAS_API), axios.get(LAST_SESION_API)]).then(
+      (res) => {
+        console.log(res);
+        console.log(res[0]);
+        console.log(res[1]);
+
+        setAvailableMangas(res[0].data);
+        setManga(res[1].data.manga);
+        setVolume(res[1].data.volume);
+        setPage(res[1].data.page);
+      }
+    );
+  }, []);
 
   useEffect(() => {
-    axios
-      .get(PAGES_API + manga + "/" + volume + "/" + page)
-      .then((response) => {
-        setImage(response.data.page);
-      })
-      .catch(errorCatcher);
-  }, [page, volume]);
+    if (manga != "")
+      axios
+        .get(PAGES_API + manga + "/" + volume + "/" + page)
+        .then((response) => {
+          setImage(response.data.page);
+        })
+        .catch(errorCatcher);
+  }, [page, volume, manga]);
 
   useEffect(() => {
-    axios
-      .get(MANGA_INFO_API + manga)
-      .then((response) => {
-        setMangaInfo(response.data);
-      })
-      .catch(errorCatcher);
+    if (manga != "")
+      axios
+        .get(MANGA_INFO_API + manga)
+        .then((response) => {
+          setMangaInfo(response.data);
+        })
+        .catch(errorCatcher);
   }, [manga]);
 
   const prevPage = () => {
@@ -88,16 +101,24 @@ function App() {
   };
 
   return (
-    <div className="img-container">
-      {imagesReady ? (
-        "hola"
-      ) : (
+    <div className="page-wrapper">
+      <Navbar
+        selectedManga={manga}
+        mangaSetter={setManga}
+        availableMangas={availableMangas}
+        mangaInfo={mangaInfo}
+        volume={volume}
+        volumeSetter={setVolume}
+        page={page}
+        pageSetter={setPage}
+      />
+      <div className="img-container">
         <img
           src={`data:image/png;base64, ${image}`}
           className="center-fit"
           onClick={processClick}
         ></img>
-      )}
+      </div>
       <Navbar
         selectedManga={manga}
         mangaSetter={setManga}

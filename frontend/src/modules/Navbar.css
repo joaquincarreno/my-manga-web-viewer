@@ -1,0 +1,9 @@
+.navbar-container {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+}
+
+.selector {
+    font-size: 3em;
+}

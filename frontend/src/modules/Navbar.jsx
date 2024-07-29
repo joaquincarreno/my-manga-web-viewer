@@ -1,3 +1,5 @@
+import "./Navbar.css";
+
 function Navbar({
   selectedManga = "",
   availableMangas = [],
@@ -26,7 +28,7 @@ function Navbar({
   };
   const createSelector = (currentValue, options, handler) => {
     return (
-      <select value={currentValue} onChange={handler}>
+      <select className="selector" value={currentValue} onChange={handler}>
         {options.map((item, index) => (
           <option key={index} value={item}>
             {item}
@@ -35,18 +37,10 @@ function Navbar({
       </select>
     );
   };
-
-  // console.log(mangaInfo.pages_per_volume[volume - 1]);
-  // console.log(volume);
-  // console.log(mangaInfo.pages_per_volume[volume]);
   const page_num = mangaInfo.pages_per_volume[volume];
-  // console.log(typeof page_num);
   const page_array = [...Array(page_num + 1).keys()].slice(1, page_num + 1);
-  // console.log(page);
-  // console.log(page_num);
-
   return (
-    <div>
+    <div className="navbar-container">
       {/* manga selector */}
       {createSelector(
         selectedManga,
@@ -55,7 +49,7 @@ function Navbar({
       )}
       {/* volume selector */}
       {createSelector(
-        volume,
+        volume+1,
         [...Array(mangaInfo.n_volumes + 1).keys()].slice(
           1,
           mangaInfo.n_volumes + 1
@@ -64,7 +58,7 @@ function Navbar({
       )}
       {/* page selector */}
       {createSelector(
-        page,
+        page+1,
         page_array,
         createHandlerNumeric("page", -1, pageSetter, [])
       )}
